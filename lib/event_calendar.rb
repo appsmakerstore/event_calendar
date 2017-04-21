@@ -62,8 +62,8 @@ module EventCalendar
       event_strips = [[nil] * (strip_end - strip_start + 1)]
     
       events.each do |event|
-        cur_date = event.start_at.to_date
-        end_date = event.end_at.to_date
+        cur_date = event.start_at.in_time_zone.to_date
+        end_date = event.end_at.in_time_zone.to_date
         cur_date, end_date = event.clip_range(strip_start, strip_end)
         start_range = (cur_date - strip_start).to_i
         end_range = (end_date - strip_start).to_i
@@ -155,8 +155,8 @@ module EventCalendar
     def clip_range(start_d, end_d)
       # make sure we are comparing date objects to date objects,
       # otherwise timezones can cause problems
-      start_at_d = start_at.to_date
-      end_at_d = end_at.to_date
+      start_at_d = start_at.in_time_zone.to_date
+      end_at_d = end_at.in_time_zone.to_date
       # Clip start date, make sure it also ends on or after the start range
       if (start_at_d < start_d and end_at_d >= start_d)
         clipped_start = start_d
